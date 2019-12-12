@@ -16,29 +16,22 @@ class webserverHandler(BaseHTTPRequestHandler):
     def do_GET(self):
 
             if self.path.endswith("/restaurant"):
-
+                restaurants = session.query(Restaurant)
 
                 self.send_response(200)
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
 
-                veggieBurgers = session.query(Restaurant)
+                output = ""
+                output += "<html><body>"
 
-                for veggieBurger in veggieBurgers:
-                    output = ""
-                    output =  veggieBurger.name
+                for restaurant in restaurants:
+                    output += restaurant.name
+                    output += "</br>"
 
-                    output += "<html><body>Hello"
-                    output += "<html><body>Hello<a href = '/edit'> Edit</a>"
 
-                    output += "</body></html>"
-
-                    newline = "<br>"
-                    newline += "<br>"
-                    newline += "<br>"
-                    self.wfile.write(output)
-                    self.wfile.write(newline)
-
+                output += "</body></html>"
+                self.wfile.write(output)
 
                 #print output
                 return
